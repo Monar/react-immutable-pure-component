@@ -1,0 +1,23 @@
+{
+  "name": "react-immutable-pure-component",
+  "version": "0.0.1",
+  "description": "React PureComponent properly handling  Immutable props",
+  "main": "index.js",
+  "keywords": [
+    "react",
+    "immutable",
+    "pure",
+    "component",
+    "pureComponent"
+  ],
+  "author": "Piotr Tomasz Monarski",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Monar/react-immutable-pure-component"
+  },
+  "dependencies": {
+    "immutable": "^3.8.1",
+    "react": "^15.4.2"
+  }
+}
