@@ -1,0 +1,32 @@
+{
+  "extends": [
+    "eslint:recommended",
+  ],
+  "parserOptions": {
+    "ecmaVersion": 7,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "rules": {
+    "indent": ["error", 2, {"SwitchCase": 1}], // one indent === 2 spaces
+    "no-var": ["error"], // never use 'var', use 'let' or 'const' instead
+    "comma-dangle": ["error", "always-multiline"], // forces trailing commas for each multiline list/map
+    "no-trailing-spaces": ["error"], // force to remove trailing white spaces
+    "no-mixed-spaces-and-tabs": ["error"], // prevent from mixing tabs and spaces for indents
+    "semi": ["error", "always"], // nazi semicolon style
+    "object-curly-spacing": ["error", "always"], // good: const { a } = b; wrong: const {a} = b;
+    "max-len": ["error", 80, 2], // number of columns === 80, tab width === 2
+    "quotes": ["error", "single"], // use single quotes in strings (backticks are allowed when used in formatting)
+    "quote-props": ["error", "as-needed", {"keywords": true}], // use quotes in param names only when needed eg 'l-o-l'
+    "arrow-parens": ["error", "always"], // always force using parens in arrow functions
+    "curly": ["error"], // always use curly braces in if, for, etc. statements
+    "no-console": ["error", { allow: ["error", "warn"] }]
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true,
+  },
+}
