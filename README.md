@@ -1,6 +1,11 @@
+[![npm version](https://badge.fury.io/js/react-immutable-pure-component.svg)](https://badge.fury.io/js/react-immutable-pure-component)
+
 # ImmutablePureComponent
 
 Unfortunately `React.PureComponent` is not embracing `Immutable.js` to it full potential. So here is my solution to this problem.
+[npm package](https://www.npmjs.com/package/react-immutable-pure-component) is
+parsed with babel so feel safe to use it from package repository or just copy
+it to your project and go from here.
 
 ```js
 /*
@@ -27,4 +32,3 @@ export class ImmutablePureComponent extends React.PureComponent {
 export default ImmutablePureComponent;
 ```
 
-package is parsed with babel so feel safe to use it from `node_modules` as well as copying it from here.
