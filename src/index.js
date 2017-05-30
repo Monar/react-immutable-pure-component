@@ -8,7 +8,7 @@ import React from 'react';
 import { is } from 'immutable';
 
 
-export class ImmutablePureComponent extends React.PureComponent {
+export class ImmutablePureComponent extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     const state = this.state || {};
