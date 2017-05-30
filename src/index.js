@@ -1,7 +1,7 @@
 /*
   Copyright (C) 2017 Piotr Tomasz Monarski.
   Licensed under the MIT License (MIT), see
-  https://github.com/Monar/bem-names
+  https://github.com/Monar/react-immutable-pure-component
 */
 
 import React from 'react';
