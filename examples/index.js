@@ -1,12 +1,12 @@
+const { is } = Immutable;
+
 class ImmutablePureComponent extends React.PureComponent {
 
   shouldComponentUpdate(nextProps, nextState) {
-    const checkStates = this.updateOnStates || Object.keys(nextState || {});
-    const checkProps = this.updateOnProps || Object.keys(nextProps);
     const state = this.state || {};
 
-    return !checkStates.every((s) => Immutable.is(nextState[s], state[s]))
-      || !checkProps.every((p) => Immutable.is(nextProps[p], this.props[p]));
+    return !(this.updateOnProps || Object.keys(nextProps)).every((p) => is(nextProps[p], this.props[p]))
+      || !(this.updateOnStates || Object.keys(nextState || {})).every((s) => is(nextState[s], state[s]));
   }
 }
 
@@ -15,15 +15,15 @@ class StackExample extends React.Component {
   constructor(props) {
     super(props);
 
-    state = {
+    this.state = {
       one: Immutable.List(),
       two: Immutable.List(),
-    }
+    };
 
-    handlePop = (stack) => { this.setState({ [stack]: this.state[stack].unshift() }); };
+    this.handlePop = (stack) => { this.setState({ [stack]: this.state[stack].shift() }); };
 
-    handlePush = (stack, value) => {
-      this.setState({ [stack]: this.state[stack].shift(value) });
+    this.handlePush = (stack, value) => {
+      this.setState({ [stack]: this.state[stack].unshift(value) });
     };
   }
 
@@ -34,16 +34,19 @@ class StackExample extends React.Component {
         onPop={() => this.handlePop('one')}
         items={this.state['one'].take(3)}
       />
-    )
-
+    );
   }
 }
 
 class Stack extends ImmutablePureComponent {
+
   constructor(props) {
     super(props);
 
-    handleAdd = () => this.props.onPush(this.input.value);
+    this.handleAdd = (event) => {
+      event.preventDefault();
+      this.props.onPush(this.input.value);
+    };
   }
 
   render() {
@@ -52,7 +55,7 @@ class Stack extends ImmutablePureComponent {
         <form className="form-inline" onSubmit={this.handleAdd}>
           <input ref={(n) => this.input = n} className="from-control" type="text"/>
           <button type="submit" className="btn btn-default">Push</button>
-          <button onClick={this.props.onPop} className="btn btn-danger">Pop</button>
+          <button type="button" onClick={this.props.onPop} className="btn btn-danger">Pop</button>
         </form>
         <div className="container">
           { this.props.items.map((i) => <p>{i}</p>) }
@@ -63,8 +66,9 @@ class Stack extends ImmutablePureComponent {
 }
 
 class Hello extends ImmutablePureComponent {
+
   render() {
-    return React.createElement( "div", null, "Hello ", this.props.name);
+    return <div>Hello {this.props.name}</div>;
   }
 }
 

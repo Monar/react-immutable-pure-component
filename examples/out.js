@@ -10,6 +10,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var _Immutable = Immutable,
+    is = _Immutable.is;
+
 var ImmutablePureComponent = function (_React$PureComponent) {
   _inherits(ImmutablePureComponent, _React$PureComponent);
 
@@ -24,14 +27,12 @@ var ImmutablePureComponent = function (_React$PureComponent) {
     value: function shouldComponentUpdate(nextProps, nextState) {
       var _this2 = this;
 
-      var checkStates = this.updateOnStates || Object.keys(nextState || {});
-      var checkProps = this.updateOnProps || Object.keys(nextProps);
       var state = this.state || {};
 
-      return !checkStates.every(function (s) {
-        return Immutable.is(nextState[s], state[s]);
-      }) || !checkProps.every(function (p) {
-        return Immutable.is(nextProps[p], _this2.props[p]);
+      return !(this.updateOnProps || Object.keys(nextProps)).every(function (p) {
+        return is(nextProps[p], _this2.props[p]);
+      }) || !(this.updateOnStates || Object.keys(nextState || {})).every(function (s) {
+        return is(nextState[s], state[s]);
       });
     }
   }]);
@@ -47,17 +48,17 @@ var StackExample = function (_React$Component) {
 
     var _this3 = _possibleConstructorReturn(this, (StackExample.__proto__ || Object.getPrototypeOf(StackExample)).call(this, props));
 
-    state = {
+    _this3.state = {
       one: Immutable.List(),
       two: Immutable.List()
     };
 
-    handlePop = function handlePop(stack) {
-      _this3.setState(_defineProperty({}, stack, _this3.state[stack].unshift()));
+    _this3.handlePop = function (stack) {
+      _this3.setState(_defineProperty({}, stack, _this3.state[stack].shift()));
     };
 
-    handlePush = function handlePush(stack, value) {
-      _this3.setState(_defineProperty({}, stack, _this3.state[stack].shift(value)));
+    _this3.handlePush = function (stack, value) {
+      _this3.setState(_defineProperty({}, stack, _this3.state[stack].unshift(value)));
     };
     return _this3;
   }
@@ -90,8 +91,9 @@ var Stack = function (_ImmutablePureCompone) {
 
     var _this5 = _possibleConstructorReturn(this, (Stack.__proto__ || Object.getPrototypeOf(Stack)).call(this, props));
 
-    handleAdd = function handleAdd() {
-      return _this5.props.onPush(_this5.input.value);
+    _this5.handleAdd = function (event) {
+      event.preventDefault();
+      _this5.props.onPush(_this5.input.value);
     };
     return _this5;
   }
@@ -117,7 +119,7 @@ var Stack = function (_ImmutablePureCompone) {
           ),
           React.createElement(
             'button',
-            { onClick: this.props.onPop, className: 'btn btn-danger' },
+            { type: 'button', onClick: this.props.onPop, className: 'btn btn-danger' },
             'Pop'
           )
         ),
@@ -151,7 +153,12 @@ var Hello = function (_ImmutablePureCompone2) {
   _createClass(Hello, [{
     key: 'render',
     value: function render() {
-      return React.createElement("div", null, "Hello ", this.props.name);
+      return React.createElement(
+        'div',
+        null,
+        'Hello ',
+        this.props.name
+      );
     }
   }]);
 
