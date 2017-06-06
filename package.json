@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "babel src --out-dir lib",
-    "example": "babel examples/index.js --out-file examples/example.js",
+    "example": "babel example/index.js --out-file example/example.js",
     "lint": "eslint ."
   },
   "keywords": [
