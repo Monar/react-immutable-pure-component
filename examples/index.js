@@ -1,6 +1,6 @@
 const { is, List } = Immutable;
 
-class ImmutablePureComponent extends React.PureComponent {
+class ImmutablePureComponent extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     const state = this.state || {};
@@ -17,7 +17,7 @@ class Example extends React.Component {
 
     this.state = {
       items: List(),
-      current: 'circle',
+      current: 'square',
     };
 
     this.handleAdd = () => {
@@ -55,14 +55,16 @@ class Example extends React.Component {
 var ItemsListRenders = 0;
 var ItemsList2Renders = 0;
 
+const mapItem = (item) => <div className={item}/>;
+
 class ItemList extends React.PureComponent {
 
-  componentDidUpdate() {
+  componentWillUpdate() {
     ItemsListRenders += 1;
   }
 
   render() {
-    const items = this.props.items.map(i => <div className={i}/>).toArray();
+    const items = this.props.items.map(mapItem);
     return (
       <div className="item-list">
         <div className="counter">
@@ -78,12 +80,12 @@ class ItemList extends React.PureComponent {
 
 class ItemList2 extends ImmutablePureComponent {
 
-  componentDidUpdate() {
+  componentWillUpdate() {
     ItemsList2Renders += 1;
   }
 
   render() {
-    const items = this.props.items.map(i => <div className={i}/>).toArray();
+    const items = this.props.items.map(mapItem);
     return (
       <div className="item-list">
         <div className="counter">
