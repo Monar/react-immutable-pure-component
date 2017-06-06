@@ -1,4 +1,4 @@
-const { is } = Immutable;
+const { is, List } = Immutable;
 
 class ImmutablePureComponent extends React.PureComponent {
 
@@ -10,67 +10,92 @@ class ImmutablePureComponent extends React.PureComponent {
   }
 }
 
-class StackExample extends React.Component {
+class Example extends React.Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-      one: Immutable.List(),
-      two: Immutable.List(),
+      items: List(),
+      current: 'circle',
     };
 
-    this.handlePop = (stack) => { this.setState({ [stack]: this.state[stack].shift() }); };
-
-    this.handlePush = (stack, value) => {
-      this.setState({ [stack]: this.state[stack].unshift(value) });
+    this.handleAdd = () => {
+      const { items, current } = this.state;
+      this.setState({
+        items: items.push(current),
+        current: current === 'circle' ? 'square' : 'circle',
+      });
     };
+
   }
 
   render() {
+    const { items, current } = this.state;
     return (
-      <Stack
-        onPush={(v) => this.handlePush('one', v)}
-        onPop={() => this.handlePop('one')}
-        items={this.state['one'].take(3)}
-      />
+      <div className="example">
+        <div className="add-section">
+          <div className={current}/>
+          <button
+            type="button"
+            onClick={this.handleAdd}
+            className="add-button btn btn-secondary"
+          >
+            Add { current }
+          </button>
+        </div>
+
+        <ItemList items={items.filter(i => i === 'square')}/>
+        <ItemList2 items={items.filter(i => i === 'circle')}/>
+      </div>
     );
   }
 }
 
-class Stack extends ImmutablePureComponent {
+var ItemsListRenders = 0;
+var ItemsList2Renders = 0;
 
-  constructor(props) {
-    super(props);
+class ItemList extends React.PureComponent {
 
-    this.handleAdd = (event) => {
-      event.preventDefault();
-      this.props.onPush(this.input.value);
-    };
+  componentDidUpdate() {
+    ItemsListRenders += 1;
   }
 
   render() {
+    const items = this.props.items.map(i => <div className={i}/>).toArray();
     return (
-      <div className="container">
-        <form className="form-inline" onSubmit={this.handleAdd}>
-          <input ref={(n) => this.input = n} className="from-control" type="text"/>
-          <button type="submit" className="btn btn-default">Push</button>
-          <button type="button" onClick={this.props.onPop} className="btn btn-danger">Pop</button>
-        </form>
-        <div className="container">
-          { this.props.items.map((i) => <p>{i}</p>) }
+      <div className="item-list">
+        <div className="counter">
+          Render count: { ItemsListRenders }
+        </div>
+        <div className="items">
+          {items}
         </div>
       </div>
     );
   }
 }
 
-class Hello extends ImmutablePureComponent {
+class ItemList2 extends ImmutablePureComponent {
+
+  componentDidUpdate() {
+    ItemsList2Renders += 1;
+  }
 
   render() {
-    return <div>Hello {this.props.name}</div>;
+    const items = this.props.items.map(i => <div className={i}/>).toArray();
+    return (
+      <div className="item-list">
+        <div className="counter">
+          Render count: { ItemsList2Renders }
+        </div>
+        <div className="items">
+          {items}
+        </div>
+      </div>
+    );
   }
 }
 
-ReactDOM.render(<StackExample/>, document.getElementById('app'));
+ReactDOM.render(<Example/>, document.getElementById('example'));
 
