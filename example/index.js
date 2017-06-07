@@ -1,14 +1,5 @@
-const { is, List } = Immutable;
-
-class ImmutablePureComponent extends React.Component {
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const state = this.state || {};
-
-    return !(this.updateOnProps || Object.keys(nextProps)).every((p) => is(nextProps[p], this.props[p]))
-      || !(this.updateOnStates || Object.keys(nextState || {})).every((s) => is(nextState[s], state[s]));
-  }
-}
+const { List } = Immutable;
+const { ImmutablePureComponent } = ImmutablePureComponent;
 
 class Example extends React.Component {
 
@@ -100,4 +91,3 @@ class ItemList2 extends ImmutablePureComponent {
 }
 
 ReactDOM.render(<Example/>, document.getElementById('example'));
-
