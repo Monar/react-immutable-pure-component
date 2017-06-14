@@ -18,17 +18,16 @@ import React from 'react';
 import { is } from 'immutable';
 
 
-export class ImmutablePureComponent extends React.PureComponent {
+export class ImmutablePureComponent extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
-    const checkStates = this.updateOnStates || Object.keys(nextState || {});
-    const checkProps = this.updateOnProps || Object.keys(nextProps);
     const state = this.state || {};
 
-    return !checkStates.every((s) => is(nextState[s], state[s]))
-      || !checkProps.every((p) => is(nextProps[p], this.props[p]));
+    return !(this.updateOnProps || Object.keys(nextProps)).every((p) => is(nextProps[p], this.props[p]))
+      || !(this.updateOnStates || Object.keys(nextState || {})).every((s) => is(nextState[s], state[s]));
   }
 }
+
 export default ImmutablePureComponent;
 ```
 
