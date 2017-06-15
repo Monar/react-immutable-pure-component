@@ -7,7 +7,10 @@ Unfortunately `React.PureComponent` is not embracing `Immutable.js` to it full p
 parsed with babel so feel safe to use it from package repository or just copy
 it to your project and go from here.
 
+[Here](https://monar.github.io/react-immutable-pure-component/) you will find a simple example of a problem it's solving.
+
 ```js
+
 /*
   Copyright (C) 2017 Piotr Tomasz Monarski.
   Licensed under the MIT License (MIT), see
