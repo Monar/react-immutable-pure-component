@@ -1,5 +1,3 @@
-'use strict';
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -9,61 +7,33 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var _Immutable = Immutable,
-    is = _Immutable.is,
     List = _Immutable.List;
 
-var ImmutablePureComponent = function (_React$Component) {
-  _inherits(ImmutablePureComponent, _React$Component);
-
-  function ImmutablePureComponent() {
-    _classCallCheck(this, ImmutablePureComponent);
-
-    return _possibleConstructorReturn(this, (ImmutablePureComponent.__proto__ || Object.getPrototypeOf(ImmutablePureComponent)).apply(this, arguments));
-  }
-
-  _createClass(ImmutablePureComponent, [{
-    key: 'shouldComponentUpdate',
-    value: function shouldComponentUpdate(nextProps, nextState) {
-      var _this2 = this;
-
-      var state = this.state || {};
-
-      return !(this.updateOnProps || Object.keys(nextProps)).every(function (p) {
-        return is(nextProps[p], _this2.props[p]);
-      }) || !(this.updateOnStates || Object.keys(nextState || {})).every(function (s) {
-        return is(nextState[s], state[s]);
-      });
-    }
-  }]);
-
-  return ImmutablePureComponent;
-}(React.Component);
-
-var Example = function (_React$Component2) {
-  _inherits(Example, _React$Component2);
+var Example = function (_React$Component) {
+  _inherits(Example, _React$Component);
 
   function Example(props) {
     _classCallCheck(this, Example);
 
-    var _this3 = _possibleConstructorReturn(this, (Example.__proto__ || Object.getPrototypeOf(Example)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Example.__proto__ || Object.getPrototypeOf(Example)).call(this, props));
 
-    _this3.state = {
+    _this.state = {
       items: List(),
       current: 'square'
     };
 
-    _this3.handleAdd = function () {
-      var _this3$state = _this3.state,
-          items = _this3$state.items,
-          current = _this3$state.current;
+    _this.handleAdd = function () {
+      var _this$state = _this.state,
+          items = _this$state.items,
+          current = _this$state.current;
 
-      _this3.setState({
+      _this.setState({
         items: items.push(current),
         current: current === 'circle' ? 'square' : 'circle'
       });
     };
 
-    return _this3;
+    return _this;
   }
 
   _createClass(Example, [{
