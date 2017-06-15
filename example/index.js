@@ -1,5 +1,4 @@
 const { List } = Immutable;
-const { ImmutablePureComponent } = ImmutablePureComponent;
 
 class Example extends React.Component {
 

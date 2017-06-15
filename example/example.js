@@ -8,7 +8,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var _Immutable = Immutable,
     List = _Immutable.List;
-var ImmutablePureComponent = ImmutablePureComponent.ImmutablePureComponent;
 
 var Example = function (_React$Component) {
   _inherits(Example, _React$Component);

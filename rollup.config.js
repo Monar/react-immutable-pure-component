@@ -5,7 +5,7 @@ export default {
   entry: 'src/index.js',
   format: 'umd',
   exports: 'named',
-  moduleName: 'ImmutablePureComponent',
+  moduleName: 'window',
   plugins: [
     resolve({
       customResolveOptions: {
