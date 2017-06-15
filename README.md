@@ -9,6 +9,14 @@ it to your project and go from here.
 
 [Here](https://monar.github.io/react-immutable-pure-component/) you will find a simple example of a problem it's solving.
 
+The `ImmutablePureComponent` extends component functionality by introducing
+`updateOnProps` and `updateOnStates`. With those properties you can specify
+list of props or states that will be checked for changes. If value is
+`undefined` (default) then all `props` and `state` will be checked, otherwise
+array of strings is expected. This way component can react only to those
+changes that are important. Useful when passing lambda function like this:
+`<Component onChange={(e) => doWhatEver(e)}/> `
+
 ```js
 
 /*
