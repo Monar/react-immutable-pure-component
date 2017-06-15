@@ -21,5 +21,5 @@ export default {
     immutable: 'Immutable',
   },
   external: ['react', 'immutable'],
-  dest: 'lib/index.js',
+  dest: 'lib/react-immutable-pure-component.js',
 };
