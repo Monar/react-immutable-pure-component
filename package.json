@@ -1,6 +1,6 @@
 {
   "name": "react-immutable-pure-component",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React PureComponent implementation embracing Immutable.js",
   "main": "lib/react-immutable-pure-component.js",
   "scripts": {
