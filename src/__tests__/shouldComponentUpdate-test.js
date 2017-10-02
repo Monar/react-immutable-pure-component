@@ -1,174 +1,231 @@
 import React from 'react';
-import { Map } from 'immutable';
-import renderer from 'react-test-renderer';
+import { Map, List } from 'immutable';
 import ImmutablePureComponent from '../index';
 
-test('Do not render when props does not change', () => {
-  let renders = 0;
-  class Component extends ImmutablePureComponent {
 
-    render() {
-      renders++;
-      return <div />;
-    }
-  }
-
-  const component = renderer.create(
-    <Component map={Map({ count: 1 })} />
-  );
-  let tree;
-
-  tree = component.toJSON();
-  expect(renders).toBe(1);
-
-  tree = component.toJSON(); // re-render
-  expect(renders).toBe(1);
-});
-
-test('Render when props change', () => {
-  let renders = 0;
-  class Component extends ImmutablePureComponent {
-
-    render() {
-      renders++;
-      return <div />;
-    }
-  }
-
-  const component = renderer.create(
-    <Component map={Map({ count: 1 })} />
-  );
-  let tree;
-
-  tree = component.toJSON();
-  expect(renders).toBe(1);
-
-  component.update(
-    <Component map={Map({ count: 2 })} />
-  );
-
-  tree = component.toJSON(); // re-render
-  expect(renders).toBe(2);
-});
-
-test('Do not render when props change to same value', () => {
-  let renders = 0;
-  class Component extends ImmutablePureComponent {
-
-    render() {
-      renders++;
-      return <div />;
-    }
-  }
-
-  const component = renderer.create(
-    <Component map={Map({ count: 1 })} />
-  );
-  let tree;
-
-  tree = component.toJSON();
-  expect(renders).toBe(1);
-
-  component.update(
-    <Component map={Map({ count: 1 })} />
-  );
-
-  tree = component.toJSON(); // re-render
-  expect(renders).toBe(1);
-});
-
-class MockComponent extends ImmutablePureComponent {
-
-  constructor(...args) {
-    super(...args);
-    this.state = {
-      map: Map({
-        count: 0,
-      }),
-    };
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick() {
-    const { count } = this.props;
-    this.setState(({ map }) => ({
-      map: map.update('count', () => map.get('count') + count),
-    }));
-  }
+const testProps = {
+  someMap: Map({key: 'value'}),
+  someList: List([1,'elo', 2]),
+  name: 'superComponent',
+  other: 123,
+  isOk: true,
 }
 
-test('Do not render when state does not change', () => {
-  let renders = 0;
-  class Component extends MockComponent {
+const testState = {
+  someMap: Map({key: 'value'}),
+  someList: List([1,'elo', 2]),
+  name: 'superComponent',
+  other: 123,
+  isOk: true,
+}
 
-    render() {
-      renders++;
-      return <div onClick={this.handleClick} />;
+const getTestComponent = (props = {}, state) => {
+  const Component = new ImmutablePureComponent();
+  Component.props = props;
+  Component.state = state;
+  return Component;
+}
+
+describe('should not update', () => {
+  it('empty', () => {
+    const Component = getTestComponent({}, undefined);
+
+    const result = Component.shouldComponentUpdate({}, undefined);
+    expect(result).toBe(false);
+  });
+
+  it('same instance of props, no state', () => {
+    const Component = getTestComponent(testProps, undefined);
+    const result = Component.shouldComponentUpdate(testProps, undefined);
+    expect(result).toBe(false);
+  });
+
+  it('same instance of state no props', () => {
+    const Component = getTestComponent({}, testState);
+    const result = Component.shouldComponentUpdate({}, testState);
+    expect(result).toBe(false);
+  });
+
+  it('same instance of state and props', () => {
+    const Component = getTestComponent(testProps, testState);
+    const result = Component.shouldComponentUpdate(testProps, testState);
+    expect(result).toBe(false);
+  });
+
+  it('same props and state but new instances', () => {
+    const Component = getTestComponent(testProps, testState);
+    const newTestProps = {
+      someMap: Map({key: 'value'}),
+      someList: List([1,'elo', 2]),
+      name: 'superComponent',
+      other: 123,
+      isOk: true,
     }
-  }
+    const newTestState = {
+      someMap: Map({key: 'value'}),
+      someList: List([1,'elo', 2]),
+      name: 'superComponent',
+      other: 123,
+      isOk: true,
+    }
+    const result = Component.shouldComponentUpdate(newTestProps, newTestState);
+    expect(result).toBe(false);
+  });
 
-  const component = renderer.create(
-    <Component count={1} />
-  );
-  let tree;
+  it('same instance of object in props and state', () => {
+    const test = { fis: 'bass' };
+    const Component = getTestComponent({ test }, { test });
+    const result = Component.shouldComponentUpdate({ test }, { test });
+    expect(result).toBe(false);
+  });
 
-  tree = component.toJSON();
-  expect(renders).toBe(1);
+  it('same instance of object in props and state, but modified', () => {
+    const test = { fis: 'bass' };
+    const Component = getTestComponent({ test }, { test });
 
-  tree = component.toJSON(); // re-render
-  expect(renders).toBe(1);
+    test['new'] = 'new';
+
+    const result = Component.shouldComponentUpdate({ test }, { test });
+    expect(result).toBe(false);
+  });
+
+  it('same instance of function in props and state', () => {
+    const test = { fis: () => {} };
+    const Component = getTestComponent({ test }, { test });
+    const result = Component.shouldComponentUpdate({ test }, { test });
+    expect(result).toBe(false);
+  });
 });
 
-test('Render when state change', () => {
-  let renders = 0;
-  class Component extends MockComponent {
+describe('should update', () => {
+  it('when add new property', () => {
+    const Component = getTestComponent({}, undefined);
 
-    render() {
-      renders++;
-      return <div onClick={this.handleClick} />;
-    }
-  }
+    const result = Component.shouldComponentUpdate({ elo: 'elo' }, undefined);
+    expect(result).toBe(true);
+  });
 
-  const component = renderer.create(
-    <Component count={1} />
-  );
-  let tree;
+  it('when add new state', () => {
+    const Component = getTestComponent({}, undefined);
 
-  tree = component.toJSON();
-  expect(renders).toBe(1);
+    const result = Component.shouldComponentUpdate({}, { elo: 'elo' });
+    expect(result).toBe(true);
+  });
 
-  tree.props.onClick();
+  it('when remove property', () => {
+    const Component = getTestComponent({elo: 'elo' }, undefined);
 
-  tree = component.toJSON(); // re-render
-  expect(renders).toBe(2);
+    const result = Component.shouldComponentUpdate({}, undefined);
+    expect(result).toBe(true);
+  });
+
+  it('when remove state', () => {
+    const Component = getTestComponent({}, {elo: 'elo' });
+
+    const result = Component.shouldComponentUpdate({}, {});
+    expect(result).toBe(true);
+  });
+
+  it('when modify any of the properties', () => {
+    const Component = getTestComponent(testProps);
+
+    expect(Component.shouldComponentUpdate({...testProps, someMap: Map({key: 'key'})})).toBe(true, 'Map');
+    expect(Component.shouldComponentUpdate({...testProps, someList: List([1, 2])})).toBe(true, 'List');
+    expect(Component.shouldComponentUpdate({...testProps, name: 'otherName'})).toBe(true, 'string');
+    expect(Component.shouldComponentUpdate({...testProps, other: 321})).toBe(true, 'number');
+    expect(Component.shouldComponentUpdate({...testProps, isOk: false})).toBe(true, 'boolean');
+  });
+
+  it('new instance of object in props', () => {
+    const test = { fis: 'bass' };
+    const Component = getTestComponent({ test });
+
+    const newTest = { fis: 'bass' };
+    const result = Component.shouldComponentUpdate({ test: newTest });
+    expect(result).toBe(true);
+  });
+
+  it('new instance of object in state', () => {
+    const test = { fis: 'bass' };
+    const Component = getTestComponent({}, { test });
+
+    const newTest = { fis: 'bass' };
+    const result = Component.shouldComponentUpdate({}, { test: newTest });
+    expect(result).toBe(true);
+  });
+
+  it('new instance of function in props and state', () => {
+    const test = { fis: () => {} };
+    const Component = getTestComponent({ test }, { test });
+    const result = Component.shouldComponentUpdate({ test: () => {} }, { test: () => {} });
+    expect(result).toBe(true);
+  });
 });
 
-test('Do not render when state change to same value', () => {
-  let renders = 0;
-  class Component extends MockComponent {
+describe('updateOnProps', () => {
+  it('when empty list, and props change', () => {
+    const Component = getTestComponent({});
+    Component.updateOnProps = [];
 
-    handleClick() {
-      this.setState(({ map }) => ({
-        map: map.update('count', () => map.get('count') + 0),
-      }));
-    }
+    const result = Component.shouldComponentUpdate({ elo: 'elo' });
+    expect(result).toBe(false);
+  });
 
-    render() {
-      renders++;
-      return <div onClick={this.handleClick} />;
-    }
-  }
+  it('when empty list, and state change', () => {
+    const Component = getTestComponent({});
+    Component.updateOnProps = [];
 
-  const component = renderer.create(
-    <Component count={0} />
-  );
-  let tree;
+    const result = Component.shouldComponentUpdate({}, { elo: 'elo' });
+    expect(result).toBe(true);
+  });
 
-  tree = component.toJSON();
-  expect(renders).toBe(1);
+  it('when defined and other prop changes', () => {
+    const Component = getTestComponent({elo: 'elo', isOk: false});
+    Component.updateOnProps = ['elo', 'fis', 'buss'];
 
-  tree.props.onClick();
+    const result = Component.shouldComponentUpdate({ elo: 'elo', isOk: true });
+    expect(result).toBe(false);
+  });
 
-  tree = component.toJSON(); // re-render
-  expect(renders).toBe(1);
+  it('when defined and prop changes', () => {
+    const Component = getTestComponent({elo: 'elo', isOk: false});
+    Component.updateOnProps = ['elo', 'fis', 'buss'];
+
+    const result = Component.shouldComponentUpdate({ elo: 'elo2', isOk: false });
+    expect(result).toBe(true);
+  });
+});
+
+describe('updateOnStates', () => {
+  it('when empty list, and state change', () => {
+    const Component = getTestComponent({});
+    Component.updateOnStates = [];
+
+    const result = Component.shouldComponentUpdate({}, { elo: 'elo' });
+    expect(result).toBe(false);
+  });
+
+  it('when empty list, and prop change', () => {
+    const Component = getTestComponent({});
+    Component.updateOnStates = [];
+
+    const result = Component.shouldComponentUpdate( { elo: 'elo' }, {});
+    expect(result).toBe(true);
+  });
+
+  it('when defined and other state changes', () => {
+    const Component = getTestComponent({}, {elo: 'elo', isOk: false});
+    Component.updateOnStates = ['elo', 'fis', 'buss'];
+
+    const result = Component.shouldComponentUpdate({}, { elo: 'elo', isOk: true });
+    expect(result).toBe(false);
+  });
+
+  it('when defined and state changes', () => {
+    const Component = getTestComponent({}, {elo: 'elo', isOk: false});
+    Component.updateOnProps = ['elo', 'fis', 'buss'];
+
+    const result = Component.shouldComponentUpdate({}, { elo: 'elo2', isOk: false });
+    expect(result).toBe(true);
+  });
 });
