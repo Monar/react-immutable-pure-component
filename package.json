@@ -37,8 +37,8 @@
     "rollup-plugin-node-resolve": "^3.0.0"
   },
   "peerDependencies": {
-    "immutable": "^3",
-    "react": "^15 || ^16",
-    "react-dom": "^15 || ^16"
+    "immutable": ">=3",
+    "react": ">=15",
+    "react-dom": ">=15"
   }
 }
