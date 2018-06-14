@@ -1,8 +1,13 @@
 {
   "name": "react-immutable-pure-component",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "React PureComponent implementation embracing Immutable.js",
   "main": "lib/react-immutable-pure-component.js",
+  "types": "types/react-immutable-pure-component.d.ts",
+  "files": [
+    "lib",
+    "types"
+  ],
   "scripts": {
     "build": "rollup -c",
     "example": "babel example/index.js --out-file example/example.js",
