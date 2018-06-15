@@ -1,12 +1,5 @@
-/*
-  Copyright (C) 2017 Piotr Tomasz Monarski.
-  Licensed under the MIT License (MIT), see
-  https://github.com/Monar/react-immutable-pure-component
-*/
-
 import React from 'react';
 import { is } from 'immutable';
-
 
 export class ImmutablePureComponent extends React.Component {
 

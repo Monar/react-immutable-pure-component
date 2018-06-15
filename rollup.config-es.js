@@ -2,9 +2,8 @@ import babel from 'rollup-plugin-babel';
 
 export default {
   entry: 'src/index.js',
-  format: 'umd',
-  exports: 'named',
-  moduleName: 'window',
+  dest: 'lib/react-immutable-pure-component.es.js',
+  format: 'es',
   plugins: [
     babel({
       exclude: 'node_modules/**',
@@ -15,5 +14,4 @@ export default {
     immutable: 'Immutable',
   },
   external: ['react', 'immutable'],
-  dest: 'lib/react-immutable-pure-component.js',
 };
