@@ -1,0 +1,23 @@
+{
+  "name": "react-immutable-pure-component-example",
+  "version": "1.0.0",
+  "description": "Example of ImmutablePureComponent",
+  "main": "index.js",
+  "author": "Piotr Tomasz Monarski",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "dependencies": {
+    "immutable": "3.8.2",
+    "react": "16.4.1",
+    "react-dom": "16.4.1",
+    "react-scripts": "1.1.4",
+    "react-immutable-pure-component": "^1",
+    "rmwc": "1.7.5"
+  }
+}
