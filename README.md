@@ -2,46 +2,62 @@
 
 # ImmutablePureComponent
 
-Unfortunately `React.PureComponent` is not embracing `Immutable.js` to it full potential. So here is my solution to this problem.
-[npm package](https://www.npmjs.com/package/react-immutable-pure-component) is
-parsed with babel so feel safe to use it from package repository or just copy
-it to your project and go from here.
+Unfortunately `React.PureComponent` is not embracing `Immutable.js` to it full
+potential. While `Immutable.js` provides [hash value](https://facebook.github.io/immutable-js/docs/#/ValueObject/hashCode),
+witch allows for fast comparison of two different instances
+`React.PureComonent` is only comparing addresses of those instances.
 
-[Here](https://monar.github.io/react-immutable-pure-component/) you will find a simple example of a problem it's solving.
-
-The `ImmutablePureComponent` extends component functionality by introducing:
+The `ImmutablePureComponent` uses
+[is](https://facebook.github.io/immutable-js/docs/#/is) to compare values and
+extends component functionality by introducing:
 * `updateOnProps`
 * `updateOnStates`
 
-With those properties you can specify
-list of props or states that will be checked for changes. If value is
-`undefined` (default) then all `props` and `state` will be checked, otherwise
-array of strings is expected.
+With those properties you can specify list of props or states that will be
+checked for changes. If value is `undefined` (default) then all `props` and
+`state` will be checked, otherwise array of keys or paths is expected. The path
+is an array of keys like in the example below. Checking values under path is
+working for `Immutable` data structures as well as for plain js data
+structures.
 
-This way component can react to property  changes that matters. Useful when
-passing lambda function like this: `<Component onChange={(e) =>
-doWhatEver(e)}/> `, that otherwise would trigger update every time.
+Under the hood version 2 is using
+[getIn](https://facebook.github.io/immutable-js/docs/#/getIn) which is new
+addition to `Immutable@4` so if you operate on previews versions use
+`react-immutable-pure-component@1` which is missing option to pass a path to
+`updateOnProps` and `updateOnStates`.
+
+### Example
+In this example component will update when value of `me` is change and will
+ignore changes of `data`, `check` or any other property. Component will also
+update on change of first element of `buzz` or change to `type` and will ignore
+changes to the rest of the state. 
 
 ```js
-/*
-  Copyright (C) 2017 Piotr Tomasz Monarski.
-  Licensed under the MIT License (MIT), see
-  https://github.com/Monar/react-immutable-pure-component
-*/
+class Example extends ImmutablePureComponent {
+  state = {
+    fis: { 
+      buzz: [10, 11]
+      ignore: 'this',
+    },
+    type: undefined,
+  };
 
-import React from 'react';
-import { is } from 'immutable';
+  updateOnStates = [
+    ['fis', 'buzz', 0],
+    'type',
+  ];
 
+  updateOnProps = [
+    ['data', 'check', 'me'],
+  ];
 
-export class ImmutablePureComponent extends React.Component {
-
-  shouldComponentUpdate(nextProps, nextState = {}) {
-    const state = this.state || {};
-
-    return !(this.updateOnProps || Object.keys({...nextProps, ...this.props})).every((p) => is(nextProps[p], this.props[p]))
-      || !(this.updateOnStates || Object.keys({ ...nextState, ...state})).every((s) => is(nextState[s], state[s]));
-  }
+  render() {...}
 }
 
-export default ImmutablePureComponent;
+let data = Immutable.fromJS({ check: { me: true } })
+
+ReactDOM.render(<Example data={data} onChange={() => {}}, root);
 ```
+
+To check what its all about checkout the interactive example :D
+### [Interactive example](https://codesandbox.io/s/github/Monar/react-immutable-pure-component/tree/master/example).
