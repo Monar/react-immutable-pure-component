@@ -1,19 +1,25 @@
 import babel from 'rollup-plugin-babel';
 
-export default {
-  entry: 'src/index.js',
-  format: 'umd',
-  exports: 'named',
-  moduleName: 'window',
-  plugins: [
-    babel({
-      exclude: 'node_modules/**',
-    }),
-  ],
-  globals: {
-    react: 'React',
-    immutable: 'Immutable',
-  },
+const share = {
+  input: 'src/index.js',
   external: ['react', 'immutable'],
-  dest: 'lib/react-immutable-pure-component.js',
+  plugins: [babel({ exclude: 'node_modules/**' })],
 };
+
+export default [
+  {
+    ...share,
+    output: {
+      file: 'lib/react-immutable-pure-component.cjs.js',
+      format: 'cjs',
+      exports: 'named',
+    },
+  },
+  {
+    ...share,
+    output: {
+      file: 'lib/react-immutable-pure-component.js',
+      format: 'es',
+    },
+  },
+];
