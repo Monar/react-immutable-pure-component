@@ -241,6 +241,24 @@ describe('updateOnProps', () => {
 });
 
 describe('updateOnProps deepCheck', () => {
+  it('should throw when prop name is not a string and there is not getIn', () => {
+    const Component = getTestComponent({ a: 1 });
+    Component.updateOnProps = [[]];
+
+    function getShouldComponentUpdateInNewScope() {
+      // eslint-disable-next-line
+      let x = Component.shouldComponentUpdate;
+      return function(...args) {
+        x.getIn = undefined;
+        return x(...args);
+      };
+    }
+
+    let w = getShouldComponentUpdateInNewScope();
+
+    expect(() => w.call(Component, { a: 1 })).toThrowErrorMatchingSnapshot();
+  });
+
   it('only empty array "get props" with same in to instances', () => {
     const Component = getTestComponent({ a: 1 });
     Component.updateOnProps = [[]];
@@ -375,5 +393,50 @@ describe('updateOnStates deepCheck', () => {
 
     const result = Component.shouldComponentUpdate({}, testState);
     expect(result).toBe(false);
+  });
+});
+
+describe('updateOnStates and updateOnProps', () => {
+  it('have some values', () => {
+    const Component = getTestComponent({ p: 1, x: 1 }, { s: 1, x: 1 });
+    Component.updateOnProps = ['p'];
+    Component.updateOnStates = ['s'];
+
+    expect(Component.shouldComponentUpdate({ p: 1 }, { s: 1 })).toBe(false);
+    expect(Component.shouldComponentUpdate({ p: 2 }, { s: 1 })).toBe(true);
+    expect(Component.shouldComponentUpdate({ p: 1 }, { s: 2 })).toBe(true);
+    expect(Component.shouldComponentUpdate({ p: 2 }, { s: 2 })).toBe(true);
+  });
+
+  it('are both default', () => {
+    const Component = getTestComponent({ p: 1, x: 1 }, { s: 1, x: 2 });
+
+    expect(
+      Component.shouldComponentUpdate({ p: 1, x: 1 }, { s: 1, x: 2 }),
+    ).toBe(false);
+    expect(Component.shouldComponentUpdate({ p: 1 }, { s: 1 })).toBe(true);
+    expect(Component.shouldComponentUpdate({ p: 1, x: 1 }, { s: 2 })).toBe(
+      true,
+    );
+    expect(Component.shouldComponentUpdate({ p: 2 }, { s: 1, x: 2 })).toBe(
+      true,
+    );
+  });
+
+  it('are both empty', () => {
+    const Component = getTestComponent({ p: 1, x: 1 }, { s: 1, x: 2 });
+    Component.updateOnProps = [];
+    Component.updateOnStates = [];
+
+    expect(
+      Component.shouldComponentUpdate({ p: 1, x: 1 }, { s: 1, x: 2 }),
+    ).toBe(false);
+    expect(Component.shouldComponentUpdate({ p: 1 }, { s: 1 })).toBe(false);
+    expect(Component.shouldComponentUpdate({ p: 1, x: 1 }, { s: 2 })).toBe(
+      false,
+    );
+    expect(Component.shouldComponentUpdate({ p: 2 }, { s: 1, x: 2 })).toBe(
+      false,
+    );
   });
 });
