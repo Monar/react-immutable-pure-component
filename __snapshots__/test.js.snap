@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`updateOnProps deepCheck should throw when prop name is not a string and there is not getIn 1`] = `"Cannot read property 'state' of undefined"`;

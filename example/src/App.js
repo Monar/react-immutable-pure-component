@@ -13,7 +13,7 @@ import { RenderCount } from './RenderCount';
 
 const styles = theme => ({
   grid: {
-    minWidth: 1200,
+    minWidth: 900,
     margin: '0 auto',
   },
   item: {

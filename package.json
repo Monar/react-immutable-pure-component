@@ -1,6 +1,6 @@
 {
   "name": "react-immutable-pure-component",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "React PureComponent implementation embracing Immutable.js",
   "main": "lib/react-immutable-pure-component.cjs.js",
   "module": "lib/react-immutable-pure-component.js",
@@ -56,7 +56,7 @@
     "rollup-plugin-babel": "4.2.0"
   },
   "peerDependencies": {
-    "immutable": ">= 4 || >= 4.0.0-rc",
+    "immutable": ">= 2 || >= 4.0.0-rc",
     "react": ">= 15",
     "react-dom": ">= 15"
   },

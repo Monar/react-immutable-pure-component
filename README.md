@@ -16,15 +16,15 @@ extends component functionality by introducing:
 With those properties you can specify list of props or states that will be
 checked for changes. If value is `undefined` (default) then all `props` and
 `state` will be checked, otherwise array of keys or paths is expected. The path
-is an array of keys like in the example below. Checking values under path is
-working for `Immutable` data structures as well as for plain js data
-structures.
+is an iterator (eg. Array) of keys like in the example below. Checking values
+under path is working for `Immutable` data structures as well as for plain js
+data structures. To benefit from this feature `immutable@4` is required
+otherwise non `string` values will throw a `TypeError`.
 
-Under the hood version 2 is using
+Under the hood version 2 is 'optionally' using
 [getIn](https://facebook.github.io/immutable-js/docs/#/getIn) which is new
-addition to `Immutable@4` so if you operate on previews versions use
-`react-immutable-pure-component@1` which is missing option to pass a path to
-`updateOnProps` and `updateOnStates`.
+addition to `Immutable@4` and all non `string` values are passed as an argument
+to `Immutable.getIn`.
 
 ### Example
 In this example component will update when value of `me` is change and will

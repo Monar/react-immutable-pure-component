@@ -3,16 +3,10 @@ import { is, getIn } from 'immutable';
 
 export class ImmutablePureComponent extends React.Component {
   shouldComponentUpdate(nextProps, nextState = {}) {
-    const state = this.state || {};
-    const props = this.props;
-
-    function checkProps(name) {
-      return is(getIn(nextProps, name), getIn(props, name));
-    }
-
-    function checkStates(name) {
-      return is(getIn(nextState, name), getIn(state, name));
-    }
+    let state = this.state || {};
+    let props = this.props;
+    let checkProps = createChecker(props, nextProps, 'updateOnProps');
+    let checkStates = createChecker(state, nextState, 'updateOnStates');
 
     const onProps =
       this.updateOnProps || Object.keys({ ...nextProps, ...this.props });
@@ -20,15 +14,25 @@ export class ImmutablePureComponent extends React.Component {
     const onState =
       this.updateOnStates || Object.keys({ ...nextState, ...state });
 
-    return (
-      !onProps.map(guardArray).every(checkProps) ||
-      !onState.map(guardArray).every(checkStates)
-    );
+    return !onProps.every(checkProps) || !onState.every(checkStates);
   }
 }
 
-function guardArray(value) {
-  return Array.isArray(value) ? value : [value];
+function createChecker(prev, next, checkName) {
+  return function(name) {
+    if (typeof name === 'string') {
+      return is(next[name], prev[name]);
+    }
+
+    if (!getIn) {
+      let value = JSON.stringify(name);
+      throw new TypeError(
+        `Not supported value "${value}" provided to ${checkName}, try updating immutable to v4`,
+      );
+    }
+
+    return is(getIn(next, name), getIn(prev, name));
+  };
 }
 
 export default ImmutablePureComponent;

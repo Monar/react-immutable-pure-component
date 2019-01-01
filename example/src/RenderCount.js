@@ -4,7 +4,7 @@ export class RenderCount extends React.Component {
   count = 0;
   render() {
     return (
-      <Typography style={{ margin: 4 }} variant="caption">
+      <Typography style={{ margin: 4, whiteSpace: 'nowrap' }} variant="caption">
         {`${this.props.name || ''}: ${++this.count}`}
       </Typography>
     );
