@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ImmutablePureComponent call check with everything is the same: first call 1`] = `
+Array [
+  Array [
+    "c",
+    Array [
+      "a",
+      "b",
+    ],
+  ],
+  Object {
+    "a": Object {
+      "b": 0,
+    },
+    "c": 10,
+  },
+  Object {
+    "a": Object {
+      "b": 0,
+    },
+    "c": 10,
+  },
+  "updateOnProps",
+]
+`;
+
+exports[`ImmutablePureComponent call check with everything is the same: second call 1`] = `
+Array [
+  Array [
+    Array [
+      "c",
+      "d",
+    ],
+    "a",
+  ],
+  Object {
+    "a": "state",
+    "c": Object {
+      "d": 0,
+    },
+  },
+  Object {
+    "a": "state",
+    "c": Object {
+      "d": 0,
+    },
+  },
+  "updateOnStates",
+]
+`;
+
+exports[`ImmutablePureComponent call check with props different 1`] = `
+Array [
+  Array [
+    "c",
+    Array [
+      "a",
+      "b",
+    ],
+  ],
+  Object {
+    "a": Object {
+      "b": 0,
+    },
+    "c": 10,
+  },
+  Object {
+    "a": Object {},
+  },
+  "updateOnProps",
+]
+`;
+
+exports[`ImmutablePureComponent call check with state different: first call 1`] = `
+Array [
+  Array [
+    "c",
+    Array [
+      "a",
+      "b",
+    ],
+  ],
+  Object {
+    "a": Object {
+      "b": 0,
+    },
+    "c": 10,
+  },
+  Object {
+    "a": Object {
+      "b": 0,
+    },
+    "c": 10,
+  },
+  "updateOnProps",
+]
+`;
+
+exports[`ImmutablePureComponent call check with state different: second call 1`] = `
+Array [
+  Array [
+    Array [
+      "c",
+      "d",
+    ],
+    "a",
+  ],
+  Object {
+    "a": "state",
+    "c": Object {
+      "d": 0,
+    },
+  },
+  Object {
+    "a": "changed",
+    "c": Object {
+      "d": 0,
+    },
+  },
+  "updateOnStates",
+]
+`;

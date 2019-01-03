@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`check when immutable does not have getIn should throw when prop name is not a string 1`] = `"Not supported value \\"[]\\" provided to updateOnProps, try updating immutable to v4"`;
-
-exports[`check when immutable does not have getIn should throw when state name is not a string 1`] = `"Not supported value \\"[]\\" provided to updateOnStates, try updating immutable to v4"`;

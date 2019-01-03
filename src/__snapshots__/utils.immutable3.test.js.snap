@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test check when immutable does not have getIn should throw when item to check is not a string 1`] = `"Not supported value \\"[\\"should\\",\\"not\\",\\"work\\"]\\" provided to test, try updating immutable to v4"`;
