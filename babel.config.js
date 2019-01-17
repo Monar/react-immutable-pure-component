@@ -3,7 +3,7 @@ module.exports = {
   plugins: ['@babel/transform-object-assign'],
   env: {
     test: {
-      presets: ['@babel/env'],
+      presets: ['@babel/env', '@babel/react'],
     },
   },
 };

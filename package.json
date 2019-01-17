@@ -20,6 +20,7 @@
   },
   "keywords": [
     "react",
+    "memo",
     "immutable",
     "pure",
     "component",
@@ -35,16 +36,19 @@
     "@babel/core": "7.2.2",
     "@babel/plugin-transform-object-assign": "7.2.0",
     "@babel/preset-env": "7.2.3",
+    "@babel/preset-react": "7.0.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.0.1",
     "babel-jest": "23.6.0",
-    "eslint": "5.11.1",
+    "enzyme": "3.8.0",
+    "enzyme-adapter-react-16": "1.7.1",
+    "eslint": "5.12.0",
     "eslint-config-monar": "1.0.2",
-    "eslint-config-prettier": "3.3.0",
+    "eslint-config-prettier": "3.5.0",
     "eslint-plugin-babel": "5.3.0",
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-prettier": "3.0.1",
-    "eslint-plugin-react": "7.12.0",
+    "eslint-plugin-react": "7.12.4",
     "immutable": "4.0.0-rc.12",
     "jest": "23.6.0",
     "prettier": "1.15.3",
@@ -52,13 +56,13 @@
     "react": "16.7.0",
     "react-dom": "16.7.0",
     "react-test-renderer": "16.7.0",
-    "rollup": "1.0.0",
-    "rollup-plugin-babel": "4.2.0"
+    "rollup": "1.1.0",
+    "rollup-plugin-babel": "4.3.0"
   },
   "peerDependencies": {
     "immutable": ">= 2 || >= 4.0.0-rc",
-    "react": ">= 15",
-    "react-dom": ">= 15"
+    "react": ">= 16.6",
+    "react-dom": ">= 16.6"
   },
   "optionalDependencies": {
     "@types/react": "*"

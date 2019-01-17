@@ -4,7 +4,7 @@ export function check(config, prev = {}, next = {}, label) {
   let checkItem = createChecker(prev, next, label);
   let checklist = config || Object.keys({ ...next, ...prev });
 
-  return !checklist.every(checkItem);
+  return checklist.every(checkItem);
 }
 
 function createChecker(prev, next, checkName) {
