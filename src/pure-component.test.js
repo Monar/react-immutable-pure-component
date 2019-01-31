@@ -1,8 +1,8 @@
 /* eslint-env node, jest */
 import { ImmutablePureComponent } from './pure-component';
-import * as utils from './utils';
+import * as checkLib from './check';
 
-let checkSpy = jest.spyOn(utils, 'check');
+let checkSpy = jest.spyOn(checkLib, 'check');
 
 const getTestComponent = (props = {}, state) => {
   const Component = new ImmutablePureComponent();

@@ -1,5 +1,5 @@
 import React from 'react';
-import { check } from './utils';
+import { check } from './check';
 
 export class ImmutablePureComponent extends React.Component {
   shouldComponentUpdate(nextProps, nextState = {}) {

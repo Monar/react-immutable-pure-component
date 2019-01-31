@@ -1,25 +1,29 @@
-import { is, getIn } from 'immutable';
+const NOT_SET = {};
 
-export function check(config, prev = {}, next = {}, label) {
-  let checkItem = createChecker(prev, next, label);
-  let checklist = config || Object.keys({ ...next, ...prev });
-
-  return checklist.every(checkItem);
+export function isMapLike(collection) {
+  return (
+    collection !== null &&
+    typeof collection === 'object' &&
+    typeof collection.get === 'function' &&
+    typeof collection.has === 'function'
+  );
 }
 
-function createChecker(prev, next, checkName) {
-  return function(name) {
-    if (typeof name === 'string') {
-      return is(next[name], prev[name]);
-    }
+export function get(collection, key, notSetValue) {
+  if (isMapLike(collection)) {
+    return collection.has(key) ? collection.get(key) : notSetValue;
+  }
 
-    if (!getIn) {
-      let value = JSON.stringify(name);
-      throw new TypeError(
-        `Not supported value "${value}" provided to ${checkName}, try updating immutable to v4`,
-      );
-    }
+  return hasOwnProperty.call(collection, key) ? collection[key] : notSetValue;
+}
 
-    return is(getIn(next, name), getIn(prev, name));
-  };
+export function getIn(collection, keyPath, notSetValue) {
+  let i = 0;
+  while (i !== keyPath.length) {
+    collection = get(collection, keyPath[i++], NOT_SET);
+    if (collection === NOT_SET) {
+      return notSetValue;
+    }
+  }
+  return collection;
 }
