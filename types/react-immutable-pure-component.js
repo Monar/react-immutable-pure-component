@@ -1,6 +1,6 @@
 /* @flow */
 
-declare type UpdateOn<T> = Array<$Keys<T> | Iterable<any>>;
+declare type UpdateOn<T> = Array<$Keys<T> | any[]>;
 
 declare export function immutableMemo<Props>(
   component: React$ComponentType<Props>,

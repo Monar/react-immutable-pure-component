@@ -2,10 +2,14 @@ export as namespace ImmutablePureComponent;
 
 import { Component, NamedExoticComponent } from 'react';
 
-function immutableMemo<P extends object>( Component: SFC<P>, updateOnProps?: Array<keyof P | Iterable<any>>): NamedExoticComponent<P>;
-function immutableMemo<T extends ComponentType<any>>( Component: T, updateOnProps?: Array<keyof P | Iterable<any>>): MemoExoticComponent<T>;
+type UpdateOn<T> = Array<keyof T | any[]>
+
+export function immutableMemo<P extends object>( Component: SFC<P>, updateOnProps?: UpdateOn<P>): NamedExoticComponent<P>;
+export function immutableMemo<T extends ComponentType<any>>( Component: T, updateOnProps?: UpdateOn<T>): MemoExoticComponent<T>;
 
 export class ImmutablePureComponent<P = {}, S = {}, SS = any> extends Component<P, S, SS> {
-      updateOnProps: Array<keyof P | Iterable<any>> ;
-      updateOnStates: Array<keyof S | Iterable<any>>;
+      updateOnProps: UpdateOn<P>;
+      updateOnStates: UpdateOn<S>;
 }
+
+export default ImmutablePureComponent;
