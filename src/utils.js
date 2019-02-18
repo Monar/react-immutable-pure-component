@@ -9,7 +9,15 @@ export function isMapLike(collection) {
   );
 }
 
+function isInvalid(collection) {
+  return collection === null || collection === undefined;
+}
+
 export function get(collection, key, notSetValue) {
+  if (isInvalid(collection)) {
+    return notSetValue;
+  }
+
   if (isMapLike(collection)) {
     return collection.has(key) ? collection.get(key) : notSetValue;
   }

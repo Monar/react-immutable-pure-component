@@ -36,6 +36,8 @@ describe('Test utils', () => {
     it('should return notSetValue', () => {
       let notSetValue = 'notSetValue';
 
+      expect(get(undefined, 'test', notSetValue)).toBe(notSetValue);
+      expect(get(null, 'test', notSetValue)).toBe(notSetValue);
       expect(get({}, 'test', notSetValue)).toBe(notSetValue);
       expect(get(new Map(), 'test', notSetValue)).toBe(notSetValue);
       expect(get(ImMap(), 'test', notSetValue)).toBe(notSetValue);
