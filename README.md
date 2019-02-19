@@ -80,7 +80,6 @@ class Example extends ImmutablePureComponent {
   render() {...}
 }
 
-// I know looks strage but this is only example alight with Immutable@4 policy of mixing types
 let data = Immutable.Map({ check: new Map([['me', true]]) }) 
 
 ReactDOM.render(<Example data={data} onChange={() => {}}, root);
