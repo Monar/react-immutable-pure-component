@@ -7,8 +7,7 @@ potential. While `Immutable.js` provides [hash value](https://facebook.github.io
 witch allows for fast comparison of two different instances
 `React.PureComonent` is only comparing addresses of those instances.
 
-The `ImmutablePureComponent` uses
-[is](https://facebook.github.io/immutable-js/docs/#/is) to compare values and
+The `ImmutablePureComponent` uses [is](https://facebook.github.io/immutable-js/docs/#/is) to compare values and
 extends component functionality by introducing:
 * `updateOnProps`
 * `updateOnStates`
@@ -16,15 +15,42 @@ extends component functionality by introducing:
 With those properties you can specify list of props or states that will be
 checked for changes. If value is `undefined` (default) then all `props` and
 `state` will be checked, otherwise array of keys or paths is expected. The path
-is an iterator (eg. Array) of keys like in the example below. Checking values
-under path is working for `Immutable` data structures as well as for plain js
-data structures. To benefit from this feature `immutable@4` is required
-otherwise non `string` values will throw a `TypeError`.
+is an `Array` of keys like in the example below. Path values are working for
+any mix of supported collection as long as given key exists, otherwise checked
+value is `undefined`. `Immutable.Collection`, plain Objects, Arrays, es6 Map
+and any collection providing `get` and `has` functionality are all supported.
 
-Under the hood version 2 is 'optionally' using
-[getIn](https://facebook.github.io/immutable-js/docs/#/getIn) which is new
-addition to `Immutable@4` and all non `string` values are passed as an argument
-to `Immutable.getIn`.
+```
+type UpdateOn<T> = Array<$Keys<T> | any[]>;
+
+export class ImmutablePureComponent<
+  Props,
+  State = void,
+> extends React$Component<Props, State> {
+
+  updateOnProps: UpdateOn<Props>;
+  updateOnStates: UpdateOn<State>;
+}
+
+export default ImmutablePureComponent;
+```
+
+# immutableMemo
+
+With React `16.6.0` we ware introduced to `React.memo` a `React.PureComponent`
+equivalent for functional components. And the same story goes here,
+unfortunately `React.memo` is not fully embracing `Immutable` potential. That
+is where `immutableMemo` steps in. This is wrapper over `React.memo` with
+custom comparison function. `immutableMemo` accepts component as first argument
+and optionally array of property keys or paths the same way as `updateOnProps`
+is working for `ImmutablePureComponent`.
+
+```
+export function immutableMemo<Props>(
+  component: React$ComponentType<Props>,
+  updateOnProps?: UpdateOn<Props>,
+): React$ComponentType<Props>;
+```
 
 ### Example
 In this example component will update when value of `me` is change and will
@@ -36,7 +62,7 @@ changes to the rest of the state.
 class Example extends ImmutablePureComponent {
   state = {
     fis: { 
-      buzz: [10, 11]
+      buzz: Immutable.List([10, 11])
       ignore: 'this',
     },
     type: undefined,
@@ -54,7 +80,8 @@ class Example extends ImmutablePureComponent {
   render() {...}
 }
 
-let data = Immutable.fromJS({ check: { me: true } })
+// I know looks strage but this is only example alight with Immutable@4 policy of mixing types
+let data = Immutable.Map({ check: new Map([['me', true]]) }) 
 
 ReactDOM.render(<Example data={data} onChange={() => {}}, root);
 ```
